@@ -1,0 +1,14 @@
+{
+  "file-ejs": {
+    "filename": {
+      "label": "Filename",
+      "placeholder": "Nom du fichier"
+    },
+    "reload": {
+      "label": "Recharger",
+      "desc": "Recharger le fichier sur le disque à chaque fois que Node est démarrer ?"
+    },
+    "name": "Nom",
+    "tip": "Le chemin du fichier sera relatif au chemin du flow."
+  }
+}

@@ -1,0 +1,31 @@
+<script type="text/x-red" data-help-name="file ejs">
+  <p>Fonctionne comme le node "ejs" mais celui-ci charge le script à exécuter
+  depuis un fichier présent sur votre disque.</p>
+
+  <p>Ceci pourrait vous aidez dans le developpement pour Node-RED. Au lieu
+  d&#039;écrire votre code EJS dans un petit formulaire du navigateur vous pouvez
+  utiliser votre éditeur/IDE préféré</p>
+
+  <p>Le nom du fichier peut être mis en place via les propriétés
+  <code>msg.<b>filename</b></code> ou <code>msg.<b>file</b></code> du message
+  en entrée.</p>
+
+  <p>Si aucun fichier n&#039;existe avec le nom donné dans le dossier
+  &#039;/root/userdir/&#039;, un fichier vide sera crée avec ce nom.</p>
+
+  <p>Crée un nouveau &#039;payload&#039; basé sur le template donné.</p>
+  <p>Il utilise la norme
+  <i><a href="https://github.com/visionmedia/ejs" target="_new">EJS</a></i>
+  .</p>
+  <p>Par exemple, quand le template suivant :</p>
+  <pre>Bonjour <%= name %>. Aujourd&#039;hui, on est <%= date %>.</pre>
+  <p>reçoit le message suivant :</p>
+<pre>
+{
+  name: "Fred",
+  date: "Lundi"
+  payload: ...
+}</pre>
+  <p>Le résultat sera le suivant :</p>
+  <pre>Bonjour Fred. Aujourd&#039;hui, on est Lundi.</pre>
+</script>

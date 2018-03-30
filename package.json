@@ -1,0 +1,19 @@
+{
+  "name": "ttb-node-file-ejs",
+  "version": "0.0.1",
+  "description": "This node loads the script to be executed from an actual file on your drive.",
+  "node-red": {
+    "nodes": {
+      "file-ejs": "file-ejs.js"
+    }
+  },
+  "dependencies": {
+    "ejs": "2.5.8"
+  },
+  "keywords": [
+    "node-red",
+    "file-ejs"
+  ],
+  "author": "http://www.digitalairways.com/",
+  "license": "http://www.wtfpl.net"
+}

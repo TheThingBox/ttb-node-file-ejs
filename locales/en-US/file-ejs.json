@@ -1,0 +1,14 @@
+{
+  "file-ejs": {
+    "filename": {
+      "label": "Filename",
+      "placeholder": "Filename"
+    },
+    "reload": {
+      "label": "Reload",
+      "desc": "Reload file from disk every time node is invoked?"
+    },
+    "name": "Name",
+    "tip": "The file path will be relative from the path of the flow."
+  }
+}
