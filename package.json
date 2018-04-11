@@ -8,7 +8,8 @@
     }
   },
   "dependencies": {
-    "ejs": "2.5.8"
+    "ejs": "2.5.8",
+    "mkdirp": "0.5.1"
   },
   "keywords": [
     "node-red",

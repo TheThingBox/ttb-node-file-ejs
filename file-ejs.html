@@ -1,20 +1,20 @@
 <script type="text/x-red" data-template-name="file ejs">
   <div class="form-row node-text-editor-row">
-    <div style="height: 250px;" class="node-text-editor" id="node-input-ejs-editor" ></div>
+  <div style="height: 250px; min-height: 150px;" class="node-text-editor" id="node-input-ejs-editor" ></div>
   </div>
   <div class="form-row node-input-filename">
-     <label for="node-input-filename"><i class="fa fa-file"></i> <span data-i18n="file-ejs.filename.label"></span></label>
-     <input type="text" id="node-input-filename"  data-i18n="[placeholder]file-ejs.filename.placeholder">
+   <label for="node-input-filename"><i class="fa fa-file"></i> <span data-i18n="file-ejs.filename.label"></span></label>
+   <input type="text" id="node-input-filename"  data-i18n="[placeholder]file-ejs.filename.placeholder">
   </div>
   <div class="form-row">
-    <label for="node-input-reloadfile" style="vertical-align: top"><i class="fa fa-refresh"></i> <span data-i18n="file-ejs.reload.label"></span></label>
-    <input type="checkbox" id="node-input-reloadfile" style="display: inline-block; width: auto; vertical-align: top;">
-    <label for="node-input-reloadfile" style="width: 70%;"> <span data-i18n="file-ejs.reload.desc"></span></label>
+  <label for="node-input-reloadfile" style="vertical-align: top"><i class="fa fa-refresh"></i> <span data-i18n="file-ejs.reload.label"></span></label>
+  <input type="checkbox" id="node-input-reloadfile" style="display: inline-block; width: auto; vertical-align: top;">
+  <label for="node-input-reloadfile" style="width: 70%;"> <span data-i18n="file-ejs.reload.desc"></span></label>
   </div>
 
   <div class="form-row">
-    <label for="node-input-name"><i class="fa fa-tag"></i> <span data-i18n="file-ejs.name"></span></label>
-    <input type="text" id="node-input-name" data-i18n="[placeholder]file-ejs.name">
+  <label for="node-input-name"><i class="fa fa-tag"></i> <span data-i18n="file-ejs.name"></span></label>
+  <input type="text" id="node-input-name" data-i18n="[placeholder]file-ejs.name">
   </div>
   <div id="node-input-tip" class="form-tips" data-i18n="[html]file-ejs.tip"></div>
 </script>
@@ -51,8 +51,8 @@
 </script>
 
 <script type="text/javascript">
-  RED.nodes.registerType('file ejs',{
-    color:"#eee",
+  RED.nodes.registerType('file ejs', {
+    color: "#eee",
     category: 'function',
     defaults: {
       name: {value:""},
@@ -72,51 +72,45 @@
       var that = this;
 
       if(this.filename){
-        function functionDialogResize() {
-          var rows = $("#dialog-form>div:not(.node-text-editor-row)");
-          var height = $("#dialog-form").height();
-          for (var i=0;i<rows.size();i++) {
-            height -= $(rows[i]).outerHeight(true);
-          }
-          var editorRow = $("#dialog-form>div.node-text-editor-row");
-          height -= (parseInt(editorRow.css("marginTop"))+parseInt(editorRow.css("marginBottom")));
-          $(".node-text-editor").css("height",height+"px");
-          that.editor.resize();
-        };
-        $("#dialog").on("dialogresize", functionDialogResize);
-        $("#dialog").one("dialogopen", function(ev) {
-          var size = $( "#dialog" ).dialog('option','sizeCache-function');
-          if (size) {
-            $("#dialog").dialog('option','width',size.width);
-            $("#dialog").dialog('option','height',size.height);
-            functionDialogResize();
-          }
-        });
-        $( "#dialog" ).one("dialogclose", function(ev,ui) {
-          var height = $( "#dialog" ).dialog('option','height');
-          $( "#dialog" ).off("dialogresize",functionDialogResize);
-        });
-
-        that.editor = RED.editor.createEditor({
+        this.editor = RED.editor.createEditor({
           id: 'node-input-ejs-editor',
-          mode: 'ace/mode/ejs'
+          mode: 'ace/mode/markdown'
         });
 
-        $.get("/file-ejs/load", {filename: that.filename}, function(data){
+        $.get("/file-ejs/load", {filename: this.filename}, function(data){
           that.editor.setValue(data);
+          that.editor.focus();
         })
-
-        that.editor.focus();
       }
       else {
         $("#node-input-ejs-editor").hide();
       }
+
     },
-    oneditsave: function(){
-      var that = this;
-      if(that.filename && that.editor){
-        var content = that.editor.getValue();
-        $.get("/file-ejs/write", {filename: that.filename, content: content});
+    oneditsave: function() {
+      if(this.filename && this.editor){
+        $.get("/file-ejs/write", {filename: this.filename, content: this.editor.getValue()});
+        this.editor.destroy();
+        delete this.editor;
+      }
+    },
+    oneditcancel: function() {
+      if(this.filename && this.editor){
+        this.editor.destroy();
+        delete this.editor;
+      }
+    },
+    oneditresize: function(size) {
+      if(this.filename && this.editor){
+        var rows = $("#dialog-form>div:not(.node-text-editor-row)");
+        var height = $("#dialog-form").height();
+        for (var i=0; i<rows.size(); i++) {
+          height -= $(rows[i]).outerHeight(true);
+        }
+        var editorRow = $("#dialog-form>div.node-text-editor-row");
+        height -= (parseInt(editorRow.css("marginTop"))+parseInt(editorRow.css("marginBottom")));
+        $(".node-text-editor").css("height",height+"px");
+        this.editor.resize();
       }
     }
   });

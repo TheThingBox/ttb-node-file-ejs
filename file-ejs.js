@@ -2,8 +2,13 @@ module.exports = function(RED) {
   var ejs = require("ejs");
   var fs = require('fs');
   var path = require("path");
+  var mkdirp = require("mkdirp");
 
   RED.library.register("ejs");
+
+  var ensurePath = function(filename){
+    mkdirp.sync(path.dirname(filename))
+  }
 
   var createEmpty = function(filename) {
     fs.writeFile(filename, "<pre>Hello <%= name %>. Today is <%= date %></pre>", function(err) {
@@ -23,6 +28,7 @@ module.exports = function(RED) {
       node.loadedFilename = this.filename;
       var script = path.join(RED.settings.userDir, this.filename);
       if (this.filename.charAt(0) == "/") script = path.resolve(this.filename);
+      ensurePath(script);
       fs.readFile(script, { encoding: 'utf-8' }, function(err, fileContent) {
         if (err) {
           if (err.code === 'ENOENT') {
@@ -47,6 +53,7 @@ module.exports = function(RED) {
       } else { // Read script from disk and run
         var script = path.join(RED.settings.userDir, this.filename);
         if (this.filename.charAt(0) == "/") script = path.resolve(this.filename);
+        ensurePath(script);
         fs.readFile(script, { encoding: 'utf-8' }, function(err, fileContent) {
           if (err) {
             if (err.code === 'ENOENT') {
@@ -80,6 +87,7 @@ module.exports = function(RED) {
     if (filename) {
       var script = path.join(RED.settings.userDir, filename);
       if (filename.charAt(0) == "/") script = path.resolve(filename);
+      ensurePath(script);
       fs.readFile(script, { encoding: 'utf-8' }, function(err, fileContent) {
         if (err) {
           console.log(err);
@@ -96,6 +104,7 @@ module.exports = function(RED) {
     if (filename) {
       var script = path.join(RED.settings.userDir, filename);
       if (filename.charAt(0) == "/") script = path.resolve(filename);
+      ensurePath(script);
       fs.writeFile(script, content, { encoding: 'utf-8' }, function(err, fileContent) {
         if (err) {
           console.log(err);
