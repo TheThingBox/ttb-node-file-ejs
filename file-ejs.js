@@ -90,7 +90,6 @@ module.exports = function(RED) {
       ensurePath(script);
       fs.readFile(script, { encoding: 'utf-8' }, function(err, fileContent) {
         if (err) {
-          console.log(err);
           res.send("");
         } else {
           res.send(fileContent);
