@@ -1,6 +1,7 @@
 module.exports = function(RED) {
+  "use strict";
   var ejs = require("ejs");
-  var fs = require('fs');
+  var fs = require("fs");
   var path = require("path");
   var mkdirp = require("mkdirp");
 
@@ -70,7 +71,6 @@ module.exports = function(RED) {
         });
       }
     });
-    RED.nodes.registerType("file ejs", FileEjsNode);
 
     function runScript(node, msg, script) {
       try {
@@ -81,6 +81,7 @@ module.exports = function(RED) {
       }
     }
   }
+  RED.nodes.registerType("file ejs", FileEjsNode);
 
   RED.httpAdmin.get('/file-ejs/load', function(req, res) {
     var filename = req.query.filename;
